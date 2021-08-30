@@ -1,0 +1,54 @@
+body {
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 16px;
+}
+
+a, a:visited, a:active {
+    text-decoration: none;
+}
+
+input {
+    font-size: 16px;
+    padding: 4px;
+    width: 280px;
+    box-sizing: border-box;
+}
+
+td {
+    padding: 5px 0px;
+}
+
+.row {
+    display: flex;
+}
+
+.container {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    padding: 0;
+    margin: auto;
+    max-width: 600px;
+    font-family: Arial, Helvetica, sans-serif;
+    flex-wrap: wrap;
+}
+
+.pad {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    
+}
+
+button {
+    font-size: 16px;
+    padding: 4px;
+    width: 100%;
+    background-color: #CCF1FF;
+    border: solid 2px #7b959e;
+    color: #384448;
+}
+
+#list {
+    display: none;
+}
