@@ -6,7 +6,20 @@ function ready(fn) {
     }
 }
 
+window.spanishVoice = undefined;
 
+speechSynthesis.addEventListener("voiceschanged", () => {
+    window.spanishVoice = speechSynthesis.getVoices().find(v => v.lang === 'es-ES');
+})
+
+
+function say(word) {
+
+    const u = new SpeechSynthesisUtterance(word);
+
+    u.voice = window.spanishVoice;
+    window.speechSynthesis.speak(u);
+}
 
 ready(() => {
 
@@ -37,7 +50,7 @@ ready(() => {
                         <input type="text" value="${currentRow.swe}"> 
                     </td>
                     <td>
-                        <input type="text"  value="${currentRow.esp}"> 
+                        <input type="text"  value="${currentRow.esp}"> ${currentRow.esp && currentRow.esp.length > 0 ? '<a href="#" onclick="javascript:say(\'' + currentRow.esp + '\')">🔉</a>' : ''}
                     </td>
                 </tr>`
         }
