@@ -1,7 +1,12 @@
+let lang = "es";
+
 function ready(fn) {
-    if (document.readyState != 'loading'){
+    if (document.readyState != 'loading') {
+        lang = new URLSearchParams(window.location.search).get('lang') == "fr" ? "fr" : "es";
+
         fn();
     } else {
+        lang = new URLSearchParams(window.location.search).get('lang') == "fr" ? "fr" : "es";
         document.addEventListener('DOMContentLoaded', fn);
     }
 }
@@ -9,7 +14,7 @@ function ready(fn) {
 window.spanishVoice = undefined;
 
 speechSynthesis.addEventListener("voiceschanged", () => {
-    window.spanishVoice = speechSynthesis.getVoices().find(v => v.lang === 'es-ES');
+    window.spanishVoice = speechSynthesis.getVoices().find(v => v.lang === (lang == "es" ? 'es-ES' : 'fr-FR'));
 })
 
 
@@ -36,14 +41,14 @@ ready(() => {
                 Svenska
             </td>
             <td>
-                Espanol
+                ${lang == "es" ? "Espanol" : "Français"}
             </td>
         </tr>
         `;
-    
-        for(var i = 0; i < numberOfItems; i++) {
 
-            const currentRow = (list && i < list.words.length) ? { swe: list.words[i].swe, esp: list.words[i].esp} : {swe: "", esp: ""}
+        for (var i = 0; i < numberOfItems; i++) {
+
+            const currentRow = (list && i < list.words.length) ? { swe: list.words[i].swe, esp: list.words[i].esp } : { swe: "", esp: "" }
 
             rows += `<tr>
                     <td>
@@ -54,7 +59,7 @@ ready(() => {
                     </td>
                 </tr>`
         }
-    
+
         rows += `
         <tr>
             <td>
@@ -65,22 +70,22 @@ ready(() => {
             </td>
         </tr>
         `
-    
+
         this.table.innerHTML = rows;
 
 
         document.getElementById("saveList").addEventListener("click", () => {
             const newList = {
-                name: document.forms[0][numberOfItems*2].value,
+                name: document.forms[0][numberOfItems * 2].value,
             }
 
             const words = [];
 
-            for(var i = 0; i < numberOfItems; i++) {
-                let swe = document.forms[0][i*2].value;
-                let esp = document.forms[0][i*2+1].value;
-                if(swe.length > 0 && esp.length > 0) {
-                    words.push({swe, esp})
+            for (var i = 0; i < numberOfItems; i++) {
+                let swe = document.forms[0][i * 2].value;
+                let esp = document.forms[0][i * 2 + 1].value;
+                if (swe.length > 0 && esp.length > 0) {
+                    words.push({ swe, esp })
                 }
             }
 
@@ -105,16 +110,16 @@ ready(() => {
                 Svenska
             </td>
             <td>
-                Espanol
+                ${lang == "es" ? "Espanol" : "Français"}
             </td>
         </tr>
         `;
 
         const wordsRandom = list.words.sort(() => 0.5 - Math.random());
-    
-        for(var i = 0; i < wordsRandom.length; i++) {
 
-            const currentRow = {swe: wordsRandom[i].swe, esp: wordsRandom[i].esp};
+        for (var i = 0; i < wordsRandom.length; i++) {
+
+            const currentRow = { swe: wordsRandom[i].swe, esp: wordsRandom[i].esp };
 
             rows += `<tr>
                     <td>
@@ -125,7 +130,7 @@ ready(() => {
                     </td>
                 </tr>`
         }
-    
+
         rows += `
         <tr>
             <td style="width: 280px">
@@ -144,7 +149,7 @@ ready(() => {
             </td>
         </tr>
         `
-    
+
         this.table.innerHTML = rows;
 
         const numberOfItems = wordsRandom.length;
@@ -155,10 +160,10 @@ ready(() => {
 
         document.getElementById("correctList").addEventListener("click", () => {
 
-            for(var i = 0; i < numberOfItems; i++) {
+            for (var i = 0; i < numberOfItems; i++) {
                 let espElement = document.forms[0][i];
 
-                if(espElement.value === espElement.dataset.correct) {
+                if (espElement.value === espElement.dataset.correct) {
                     espElement.style.border = "solid 2px green"
                     espElement.style.background = "rgb(206 251 154)";
                 } else {
@@ -171,7 +176,7 @@ ready(() => {
     }
 
     function showLists() {
-        
+
         this.listElement.style.display = 'none';
         this.listsElement.style.display = 'block';
 
@@ -181,8 +186,8 @@ ready(() => {
 
         document.querySelectorAll("a[data-list-name]").forEach((e) => {
             e.addEventListener("click", () => {
-                
-                switch(e.dataset.listTask) {
+
+                switch (e.dataset.listTask) {
                     case "delete":
                         delete this.lists[e.dataset.listName];
                         localStorage.setItem('lists', JSON.stringify(this.lists));
@@ -195,7 +200,7 @@ ready(() => {
                         runList(this.lists[e.dataset.listName]);
                         break;
                 }
-                
+
             })
         });
 
